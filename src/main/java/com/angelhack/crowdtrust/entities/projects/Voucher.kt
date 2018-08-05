@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
 /**
  * Created by David Useche on 4/08/2018.
  */
-class Voucher (
+class Voucher {
 
 
     //var outGoings: List<OutGoings>,
 
     @JsonProperty(value = "id")
-    var id: Int,
+    var id: Int = 0
 
     @JsonProperty(value = "filename")
-    var fileName: String
-)
+    var fileName: String = ""
+}

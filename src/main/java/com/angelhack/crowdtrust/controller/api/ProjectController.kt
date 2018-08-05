@@ -1,7 +1,9 @@
 package com.angelhack.crowdtrust.controller.api
 
 import com.angelhack.crowdtrust.entities.Project
+import com.angelhack.crowdtrust.entities.projects.Voucher
 import com.angelhack.crowdtrust.services.ProjectService
+import com.angelhack.crowdtrust.services.VoucherService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.*
 class ProjectController {
     @Autowired
     private lateinit var projectService: ProjectService
+
+    @Autowired
+    private lateinit var voucherService: VoucherService
 
     @GetMapping("all")
     @ResponseBody
@@ -25,5 +30,13 @@ class ProjectController {
         val projects = projectService.getProjectById(id)
 
         return projects
+    }
+
+    @GetMapping("/voucher/{id}")
+    @ResponseBody
+    fun getVoucherById(@PathVariable id:Int): Voucher{
+        val voucher = voucherService.getByVoucherId(id)
+
+        return voucher
     }
 }
