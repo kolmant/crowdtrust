@@ -16,9 +16,9 @@ class OrganizationController {
 
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
-        val epm = Organization("EPM",1, listOf())
-        val cruzRoja = Organization("Cruz Roja",2, listOf())
-        val transpColombia = Organization("Transparencia Colombia",3, listOf())
+        val epm = Organization("EPM",1)
+        val cruzRoja = Organization("Cruz Roja",2)
+        val transpColombia = Organization("Transparencia Colombia",3)
 
         val cruzRojaProj = Project(
                 1,
