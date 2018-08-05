@@ -2,6 +2,7 @@ package com.angelhack.crowdtrust.entities
 
 import com.angelhack.crowdtrust.entities.projects.ExternalIncomes
 import com.angelhack.crowdtrust.entities.projects.OrganizationIncomes
+import com.angelhack.crowdtrust.entities.projects.OutGoings
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
@@ -20,7 +21,7 @@ class Project(){
     var image: String = ""
 
     @JsonProperty("expected_budget")
-    var expectedBudget: Float = 0.0f
+    var expectedBudget: Long = 0
 
     @JsonProperty("expected_init_date")
     lateinit var expectedInitDate: LocalDate
@@ -37,6 +38,8 @@ class Project(){
     var totalExternalIncomes: Long = 0
 
     var totalOrganizationIncomes: Long = 0
+
+    lateinit var outgoings: List<OutGoings>
 
 
 

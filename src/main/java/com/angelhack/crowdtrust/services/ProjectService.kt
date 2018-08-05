@@ -19,6 +19,9 @@ class ProjectService {
     @Autowired
     private lateinit var organizationIncomesService: OrganizationIncomesService
 
+    @Autowired
+    private lateinit var outgoingsService: OutgoingsService
+
     fun getAllProjects() : List<Project>{
         val projects = projectRepository.getAll()
         projects.forEach {
@@ -27,6 +30,7 @@ class ProjectService {
             it.organizationIncomes = organizationIncomesService.getByProjectId(it.id)
             it.totalExternalIncomes = it.externalIncomes.sumBy { income -> income.quantity }.toLong()
             it.totalOrganizationIncomes = it.organizationIncomes.sumBy { income -> income.quantity }.toLong()
+            it.outgoings = outgoingsService.getByProjectId(it.id)
         }
         return projects
     }
@@ -38,6 +42,7 @@ class ProjectService {
         toReturn.organizationIncomes = organizationIncomesService.getByProjectId(id)
         toReturn.totalExternalIncomes = toReturn.externalIncomes.sumBy { income -> income.quantity }.toLong()
         toReturn.totalOrganizationIncomes = toReturn.organizationIncomes.sumBy { income -> income.quantity }.toLong()
+        toReturn.outgoings = outgoingsService.getByProjectId(id)
         return toReturn
     }
 }
