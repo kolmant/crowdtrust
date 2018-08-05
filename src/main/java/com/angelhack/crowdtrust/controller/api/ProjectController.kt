@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/projects")
 class ProjectController {
     @Autowired
-    private lateinit var projectService: ProjectService;
+    private lateinit var projectService: ProjectService
 
     @GetMapping("all")
     @ResponseBody
     fun getAll(): List<Project>{
-        val projects = projectService.getAllProjects();
+        val projects = projectService.getAllProjects()
+
         return projects
     }
 }

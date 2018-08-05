@@ -16,8 +16,7 @@ class Project(){
 
     lateinit var description: String
 
-    @JsonProperty("image")
-    lateinit var imgName: String
+    var image: String = ""
 
     @JsonProperty("expected_budget")
     var expectedBudget: Float = 0.0f
@@ -28,7 +27,6 @@ class Project(){
     @JsonProperty("expected_end_date")
     lateinit var expectedEndDate: LocalDate
 
-    @JsonProperty("expected_init_date")
     lateinit var organizations: List<Organization>
 
     lateinit var incomes: List<ExternalIncomes>
