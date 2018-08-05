@@ -1,6 +1,7 @@
 package com.angelhack.crowdtrust.entities
 
 import com.angelhack.crowdtrust.entities.projects.ExternalIncomes
+import com.angelhack.crowdtrust.entities.projects.OrganizationIncomes
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
@@ -29,5 +30,9 @@ class Project(){
 
     lateinit var organizations: List<Organization>
 
-    lateinit var incomes: List<ExternalIncomes>
+    lateinit var externalIncomes: List<ExternalIncomes>
+
+    lateinit var organizationIncomes: List<OrganizationIncomes>
+
+
 }

@@ -1,5 +1,6 @@
 package com.angelhack.crowdtrust.respositories
 
+import com.angelhack.crowdtrust.entities.Organization
 import com.angelhack.crowdtrust.entities.Project
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -15,5 +16,12 @@ class ProjectRepository {
     fun getAll(): List<Project> {
         return jdbcTemplate.query(QUERY_GET_ALL, BeanPropertyRowMapper(Project::class.java))
     }
-    private val QUERY_GET_ALL = "SELECT * from projects";
+    private val QUERY_GET_ALL = "SELECT * from projects"
+
+    fun getById(id:Int): Project {
+        return jdbcTemplate.query(
+                "SELECT * FROM projects where id = :id",
+                mapOf("id" to id),
+                BeanPropertyRowMapper(Project::class.java))[0]
+    }
 }
