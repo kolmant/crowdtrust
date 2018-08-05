@@ -34,5 +34,10 @@ class Project(){
 
     lateinit var organizationIncomes: List<OrganizationIncomes>
 
+    var totalExternalIncomes: Long = 0
+
+    var totalOrganizationIncomes: Long = 0
+
+
 
 }

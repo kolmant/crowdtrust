@@ -21,11 +21,13 @@ class ProjectService {
 
     fun getAllProjects() : List<Project>{
         val projects = projectRepository.getAll()
-        projects.forEach({
+        projects.forEach {
             it.organizations = organizationService.getByProjectId(it.id)
             it.externalIncomes = externalIncomesService.getByProjectId(it.id)
             it.organizationIncomes = organizationIncomesService.getByProjectId(it.id)
-        })
+            it.totalExternalIncomes = it.externalIncomes.sumBy { income -> income.quantity }.toLong()
+            it.totalOrganizationIncomes = it.organizationIncomes.sumBy { income -> income.quantity }.toLong()
+        }
         return projects
     }
 
@@ -34,6 +36,8 @@ class ProjectService {
         toReturn.organizations = organizationService.getByProjectId(id)
         toReturn.externalIncomes = externalIncomesService.getByProjectId(id)
         toReturn.organizationIncomes = organizationIncomesService.getByProjectId(id)
+        toReturn.totalExternalIncomes = toReturn.externalIncomes.sumBy { income -> income.quantity }.toLong()
+        toReturn.totalOrganizationIncomes = toReturn.organizationIncomes.sumBy { income -> income.quantity }.toLong()
         return toReturn
     }
 }
