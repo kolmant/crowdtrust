@@ -13,8 +13,8 @@ class ExternalIncomesRepository {
 
     fun getByProjectId(id: Int): List<ExternalIncomes> {
         return jdbcTemplate.query(
-                "SELECT * FROM external_incomes where project_id = :projectId",
-                mapOf("projectId" to id),
+                "SELECT *, external_user_id as donatorId FROM external_incomes where project_id = :id",
+                mapOf("id" to id),
                 BeanPropertyRowMapper(ExternalIncomes::class.java))
     }
 

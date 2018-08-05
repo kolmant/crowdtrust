@@ -14,8 +14,8 @@ class OrganizationsIncomesRepository {
 
     fun getByProjectId(id: Int): List<OrganizationIncomes> {
         return jdbcTemplate.query(
-                "SELECT * FROM organization_incomes where project_id = :projectId",
-                mapOf("projectId" to id),
+                "SELECT *, organization_id as donatorId FROM organization_incomes where project_id = :id",
+                mapOf("id" to id),
                 BeanPropertyRowMapper(OrganizationIncomes::class.java))
     }
 

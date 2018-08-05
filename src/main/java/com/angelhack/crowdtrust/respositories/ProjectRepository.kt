@@ -20,7 +20,7 @@ class ProjectRepository {
 
     fun getById(id:Int): Project {
         return jdbcTemplate.query(
-                "SELECT * FROM projects where id = :id",
+                "SELECT *, expected_init_date as expectedInitDate, expected_end_date as expectedEndDate FROM projects where id = :id",
                 mapOf("id" to id),
                 BeanPropertyRowMapper(Project::class.java))[0]
     }
