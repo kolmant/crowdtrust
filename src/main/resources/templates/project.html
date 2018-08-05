@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title th:text="'CrowdTrust - '+${project.name}"></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../css/page.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+  <div th:replace="header :: header"></div>
+
+  <!-- Page Content -->
+    <div class="container mt-5 mb-3">
+
+      <div class="row">
+          <div class="col-lg-4">
+              <center>
+                  <h5 class="my-4">
+                      <strong>
+                          Conoce más de de las organizaciones involucradas
+                      </strong>
+                  </h5>
+              </center>
+              <div id="accordion-list">
+                  <div class="card" th:each="organization : ${organizations}">
+                      <div class="card-header" th:id="'heading-'+-${organization.id}">
+                          <h5 class="mb-0">
+                              <button class="btn btn-link"
+                                      data-toggle="collapse"
+                                      th:attr="data-target='#collapse-'+${organization.id}, aria-controls='#collapse-'+${organization.id}"
+                                      th:text="${organization.name}"
+                                      aria-expanded="true">
+                              </button>
+                          </h5>
+                      </div>
+
+                      <div th:id="'collapse-'+${organization.id}" class="collapse show"
+                           th:attr="aria-labelledby='#heading-'+${organization.id}"
+                           data-parent="#accordion-list">
+                          <div class="card-body">
+                              <ul>
+                                  <li>Numero de proyectos: <strong>72</strong></li>
+                                  <li>Numero de proyectos finalizados: <strong>50</strong></li>
+                                  <li>Numero de proyectos en progreso: <strong>22</strong></li>
+                                  <li>Numero de usuarios que han aportado a sus proyectos: <strong>56791</strong></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-8">
+          <div class="row my-4">
+                <div class="col-lg-12 col-md-12 mb-4 project-view" th:id="${project.id}">
+                    <div style="display: none;" th:id="'organization-'+${org.id}" th:each="org : ${project.organizations}"></div>
+                  <div class="card h-100">
+                    <a href="#"><img class="card-img-top" th:src="'http://localhost:8080/images/'+${project.image}" alt=""></a>
+                    <div class="card-body">
+                      <h4 class="card-title" th:text="${project.name}"></h4>
+                      <p class="card-text" th:text="${project.description}"></p>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-warning" role="progressbar" th:style="'width: '+${((project.totalExternalIncomes+0.0)/project.expectedBudget+0.0)*100}+'%'" aria-valuemin="0" aria-valuemax="100"><strong>Usuarios</strong></div>
+                            <div class="progress-bar bg-info" role="progressbar" th:style="'width: '+${((project.totalOrganizationIncomes+0.0)/(project.expectedBudget+0.0)*100)}+'%'" aria-valuemin="0" aria-valuemax="100"><strong>ONGs</strong></div>
+                        </div>
+                        <small><strong th:text="${((project.totalOrganizationIncomes+project.totalExternalIncomes+0.0)/project.expectedBudget+0.0)*100}+'%'"></strong> del valor total a recaudar: <span th:text="'$'+${project.expectedBudget}+' COP'"></span></small>
+                    </div>
+                      <div class="card-footer">
+                          <div class="row">
+                              <div class="col-9">
+                                  <input type="email" class="form-control" placeholder="Valor en COP">
+                              </div>
+                              <div class="col-3">
+                                  <a role="button" th:onclick="'aportar(\''+${project.id}+'\');'" class="btn btn-success btn-md btn-block" style="color: #ffffff;">Aportar</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div id="accordion-outgoings">
+                          <div class="card" th:each="outgoing, stat : ${outgoings}">
+                              <div class="card-header" th:id="'heading-outgoings-'+${stat.index}">
+                                  <h5 class="mb-0">
+                                      <button class="btn btn-link"
+                                              data-toggle="collapse"
+                                              th:attr="data-target='#collapse-outgoings-'+${stat.index}, aria-controls='#collapse-outgoings-'+${stat.index}"
+                                              th:text="${outgoing.name+', Subtotal: $ '+#numbers.formatDecimal(outgoing.total, 0, 'COMMA', 2, 'POINT')+' COP, Porcentaje: '+#numbers.formatDecimal(outgoing.percentage, 0, 2)+'%'}"
+                                              aria-expanded="true">
+                                      </button>
+                                  </h5>
+                              </div>
+
+                              <div th:id="'collapse-outgoings-'+${stat.index}" class="collapse"
+                                   th:attr="aria-labelledby='#heading-outgoings-'+${stat.index}"
+                                   data-parent="#accordion-outgoings">
+                                  <div class="card-body">
+                                      <div id="accordion-outgoings-secondary" th:each="secondary, stat_sec : ${outgoing.detail}">
+                                          <div class="card">
+                                              <div class="card-header" th:id="'heading-outgoings-secondary-'+-${stat_sec.index}">
+                                                  <h5 class="mb-0">
+                                                      <button class="btn btn-link"
+                                                              data-toggle="collapse"
+                                                              th:attr="data-target='#collapse-outgoings-secondary-'+${stat_sec.index}, aria-controls='#collapse-outgoings-secondary-'+${stat_sec.index}"
+                                                              th:text="${secondary.name+', Subtotal: $ '+#numbers.formatDecimal(secondary.total, 0, 'COMMA', 2, 'POINT')+' COP, Porcentaje: '+#numbers.formatDecimal(secondary.percentage, 0, 2)+'%'}"
+                                                              aria-expanded="true">
+                                                      </button>
+                                                  </h5>
+                                              </div>
+
+                                              <div th:id="'collapse-outgoings-'+${stat.index}" class="collapse show"
+                                                   th:attr="aria-labelledby='#heading-outgoings-secondary-'+${stat.index}"
+                                                   data-parent="#accordion-outgoings-secondary">
+                                                  <div class="card-body">
+                                                      <table class="table">
+                                                          <thead>
+                                                          <tr>
+                                                              <th scope="col">#</th>
+                                                              <th scope="col">Cantidad</th>
+                                                              <th scope="col">Total gastado</th>
+                                                              <th scope="col">Porcentaje</th>
+                                                              <th scope="col"># de factura</th>
+                                                          </tr>
+                                                          </thead>
+                                                          <tbody>
+                                                          <tr th:each="tercero, tercero_stat : ${secondary.detail}">
+                                                              <th scope="row" th:text="${tercero_stat.index+1}"></th>
+                                                              <td th:text="${tercero.quantity}"></td>
+                                                              <td th:text="${'$ '+#numbers.formatDecimal(tercero.total, 0, 'COMMA', 2, 'POINT')+' COP'}"></td>
+                                                              <td th:text="${#numbers.formatDecimal(tercero.percentage, 0, 2)+'%'}"></td>
+                                                              <td>
+                                                                  <a role="button" th:text="${tercero.voucherId}" th:onclick="'showVoucher(\''+${tercero.voucherId}+'\');'" class="btn btn-primary btn-md" style="color: #ffffff;"></a>
+                                                              </td>
+                                                          </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+          </div>
+          <!-- /.row -->
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Factura</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <center>
+                      <img id="toLoadImage"/>
+                  </center>
+              </div>
+          </div>
+      </div>
+  </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; CrowdTrust 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/project.js"></script>
+
+  </body>
+
+</html>

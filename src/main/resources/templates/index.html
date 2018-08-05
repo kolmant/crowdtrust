@@ -14,70 +14,60 @@
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/shop-homepage.css" rel="stylesheet">
+    <link href="../css/page.css" rel="stylesheet">
 
   </head>
 
   <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">CrowdTrust</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <div th:replace="header :: header"></div>
 
-    <!-- Page Content -->
-    <div class="container">
+  <!-- Page Content -->
+    <div class="container mt-5 mb-3">
 
       <div class="row">
           <div class="col-lg-3">
-              <h5 class="my-4">Filtra por organización</h5>
+              <center>
+                  <h5 class="my-4">
+                      <strong>
+                          Filtra por organización
+                      </strong>
+                  </h5>
+              </center>
               <div class="list-group">
-                  <a href="#" class="list-group-item" th:onclick="'filterByOrganization(\'' + ${organization.id} + '\');'" th:each="organization : ${organizations}" th:text="${organization.name}"></a>
+                  <a href="#" class="list-group-item" th:id="'filter-'+${organization.id}" th:onclick="'filterByOrganization(\'' + ${organization.id} + '\');'" th:each="organization : ${organizations}" th:text="${organization.name}"></a>
               </div>
           </div>
+
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-9">
           <div class="row my-4">
-                <div class="col-lg-4 col-md-6 mb-4 project-view" th:id="${organization.id}" th:each="organization : ${organizations}">
+                <div class="col-lg-6 col-md-6 mb-4 project-view" th:id="${project.id}" th:each="project : ${projects}">
+                    <div style="display: none;" th:id="'organization-'+${org.id}" th:each="org : ${project.organizations}"></div>
                   <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                    <a href="#"><img class="card-img-top" th:src="'http://localhost:8080/images/'+${project.image}" alt=""></a>
                     <div class="card-body">
-                      <h4 class="card-title">
-                        <a href="#" th:text="${organization.name}"></a>
-                      </h4>
-                      <h5>$24.99</h5>
-                      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                      <h4 class="card-title" th:text="${project.name}"></h4>
+                      <p class="card-text" th:text="${project.description}"></p>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-warning" role="progressbar" th:style="'width: '+${((project.totalExternalIncomes+0.0)/project.expectedBudget+0.0)*100}+'%'" aria-valuemin="0" aria-valuemax="100"><strong>Usuarios</strong></div>
+                            <div class="progress-bar bg-info" role="progressbar" th:style="'width: '+${((project.totalOrganizationIncomes+0.0)/(project.expectedBudget+0.0)*100)}+'%'" aria-valuemin="0" aria-valuemax="100"><strong>ONGs</strong></div>
+                        </div>
+                        <small><strong th:text="${((project.totalOrganizationIncomes+project.totalExternalIncomes+0.0)/project.expectedBudget+0.0)*100}+'%'"></strong> del valor total a recaudar: <span th:text="'$'+${project.expectedBudget}+' COP'"></span></small>
                     </div>
                     <div class="card-footer">
-                      <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <a role="button" th:href="'http://localhost:8080/project/'+${project.id}" class="btn btn-primary btn-md btn-block">Ver</a>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <a role="button" th:href="'http://localhost:8080/project/'+${project.id}" class="btn btn-success btn-md btn-block">Aportar</a>
+                            </div>
+                        </div>
                     </div>
                   </div>
                 </div>
-
           </div>
           <!-- /.row -->
 
